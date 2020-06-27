@@ -4,7 +4,7 @@ import 'typeface-roboto';
 import QuoteMachine from './components/QuoteMachine'
 import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-
+var colors = ['#16a085', '#27ae60', '#2c3e50', '#f39c12', '#e74c3c', '#9b59b6', '#FB6964', '#342224', "#472E32", "#BDBB99", "#77B1A9", "#73A857"];
 const styles={
   container:{
     display:'flex',
@@ -18,9 +18,10 @@ class App extends Component {
     this.state={
       quotes:[],
       selectedQuoteIndex: null,
+      colorIndex: null,
     }
     this.assignNewQuoteIndex=this.assignNewQuoteIndex.bind(this);
-    this.selectQuoteIndex=this.generateNewQuoteIndex.bind(this);
+    
   }
 
   componentDidMount(){
@@ -36,6 +37,12 @@ class App extends Component {
     }
     return this.state.quotes[this.state.selectedQuoteIndex];
   }
+  get selectedColorIndex(){
+    if(!this.state.colorIndex){
+      return undefined;
+    }
+    return this.state.colorIndex;
+  }
   /*
   * returen an integer representing an index in state.quotes
   *if state.quotes is empty, return undefined
@@ -46,19 +53,25 @@ class App extends Component {
     }
     return random(0, this.state.quotes.length-1);
   }
+  generateNewColorIndex(){
+    return random(0, colors.length-1);
+  }
 
   assignNewQuoteIndex(){
-    this.setState({selectedQuoteIndex: this.generateNewQuoteIndex()});
+    this.setState({
+      selectedQuoteIndex: this.generateNewQuoteIndex(),
+      colorIndex: this.generateNewColorIndex(),
+    });
   }
  
   render(){
-  
+     
   return (
-    <Grid className={this.props.classes.container} id="quote-box" justify="center" container>
+    <Grid className={this.props.classes.container} id="quote-box" justify="center" container style={{backgroundColor:colors[this.selectedColorIndex]}}>
      <Grid xs={5} item>
        {
          this.selectedQuote?
-         <QuoteMachine selectedQuote={this.selectedQuote} assignNewQuoteIndex={this.assignNewQuoteIndex}/>:
+         <QuoteMachine selectedQuote={this.selectedQuote} assignNewQuoteIndex={this.assignNewQuoteIndex} selectedColorIndex={this.selectedColorIndex} />:
          null
        }
      </Grid>     
