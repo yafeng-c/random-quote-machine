@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
 import {random} from 'lodash';
-import './App.css';
+import 'typeface-roboto';
 import QuoteMachine from './components/QuoteMachine'
+import { Grid } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
+const styles={
+  container:{
+    display:'flex',
+    height: '100vh',
+    alignItems: 'center',
+  }
+}
 class App extends Component {
   constructor(props){
     super(props);
@@ -45,11 +54,17 @@ class App extends Component {
   render(){
   
   return (
-    <div className="App" id="quote-box">
-     <QuoteMachine selectedQuote={this.selectedQuote} assignNewQuoteIndex={this.assignNewQuoteIndex}/>
-    </div>
+    <Grid className={this.props.classes.container} id="quote-box" justify="center" container>
+     <Grid xs={5} item>
+       {
+         this.selectedQuote?
+         <QuoteMachine selectedQuote={this.selectedQuote} assignNewQuoteIndex={this.assignNewQuoteIndex}/>:
+         null
+       }
+     </Grid>     
+    </Grid>
   );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
